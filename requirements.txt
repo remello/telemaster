@@ -1,0 +1,11 @@
+python-telegram-bot
+langchain
+langchain-openai
+langchain-anthropic
+# langchain-xai # Uncomment when available
+python-dotenv
+requests
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+langchain_community
