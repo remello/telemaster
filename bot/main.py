@@ -2,7 +2,6 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters
 from bot.config import TELEGRAM_TOKEN
 from bot.handlers import (
     start,
-    model,
     handle_message,
     handle_voice,
     miniapp,
@@ -12,6 +11,7 @@ from bot.handlers import (
     voice_off,
     pomodoro,
     progress,
+    handle_button_press,
 )
 
 def main():
@@ -21,14 +21,7 @@ def main():
     application = Application.builder().token(TELEGRAM_TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("model", model))
-    application.add_handler(CommandHandler("miniapp", miniapp))
-    application.add_handler(CommandHandler("voice_on", voice_on))
-    application.add_handler(CommandHandler("voice_off", voice_off))
-    application.add_handler(CommandHandler("pomodoro", pomodoro))
-    application.add_handler(CommandHandler("progress", progress))
-
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_button_press))
     application.add_handler(MessageHandler(filters.VOICE, handle_voice))
     application.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_web_app_data))
 
