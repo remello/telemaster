@@ -9,6 +9,8 @@ This is a Telegram bot for task management and productivity, built with Python a
 -   **Speech-to-Text:** Transcribe voice messages using ElevenLabs API.
 -   **Telegram Mini App Support:** A placeholder for integrating a Telegram Mini App.
 -   **User Data Persistence:** User preferences and context are stored in a local SQLite database.
+-   **Text-to-Speech:** Get voice responses from the bot.
+-   **Productivity Tools:** Use commands like `/pomodoro` and `/progress` to manage your workflow.
 
 ## Project Structure
 
@@ -22,6 +24,7 @@ This is a Telegram bot for task management and productivity, built with Python a
 │   ├── handlers.py
 │   ├── gcal.py
 │   ├── stt.py
+│   ├── tts.py
 │   └── storage.py
 ├── .env
 ├── requirements.txt
@@ -81,6 +84,10 @@ python -m bot.main
 -   `/start`: Welcome message.
 -   `/model [gpt/claude/grok]`: Switch between AI models.
 -   `/miniapp`: Open the Telegram Mini App.
+-   `/voice_on`: Enable voice responses.
+-   `/voice_off`: Disable voice responses.
+-   `/pomodoro`: Start a 25-minute Pomodoro timer.
+-   `/progress`: Get a summary of your upcoming tasks from Google Calendar.
 
 ## Notes
 
