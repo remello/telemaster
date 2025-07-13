@@ -37,7 +37,7 @@ def get_llm_chain(user_id, model_name, api_key):
     prompt = ChatPromptTemplate(
         messages=[
             SystemMessagePromptTemplate.from_template(
-                "You are a helpful assistant and a project management mentor."
+                "You are a helpful assistant and a project management mentor. Prioritize tasks based on the Eisenhower matrix (urgency and importance)."
             ),
             MessagesPlaceholder(variable_name="chat_history"),
             HumanMessagePromptTemplate.from_template("{question}"),

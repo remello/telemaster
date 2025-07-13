@@ -8,6 +8,10 @@ from bot.handlers import (
     miniapp,
     handle_web_app_data,
     error_handler,
+    voice_on,
+    voice_off,
+    pomodoro,
+    progress,
 )
 
 def main():
@@ -19,6 +23,10 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("model", model))
     application.add_handler(CommandHandler("miniapp", miniapp))
+    application.add_handler(CommandHandler("voice_on", voice_on))
+    application.add_handler(CommandHandler("voice_off", voice_off))
+    application.add_handler(CommandHandler("pomodoro", pomodoro))
+    application.add_handler(CommandHandler("progress", progress))
 
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     application.add_handler(MessageHandler(filters.VOICE, handle_voice))

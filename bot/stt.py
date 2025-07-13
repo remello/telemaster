@@ -2,7 +2,9 @@ import requests
 import tempfile
 import os
 from bot.config import ELEVENLABS_API_KEY
+from tenacity import retry, stop_after_attempt, wait_fixed
 
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def transcribe_voice(ogg_file):
     url = "https://api.elevenlabs.io/v1/speech-to-text/convert"
     headers = {
