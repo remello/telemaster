@@ -1,5 +1,5 @@
 import json
-from telegram import Update, InlineKeyboardButton, WebAppInfo
+from telegram import Update, InlineKeyboardButton, WebAppInfo, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes
 from bot.storage import user_data
 from bot.models import get_llm_chain
@@ -9,25 +9,46 @@ from bot.gcal import create_event, get_events
 from bot.tts import text_to_speech
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Welcome! I am your task management bot.")
+    keyboard = [
+        ["Model", "Mini App"],
+        ["Voice On", "Voice Off"],
+        ["Pomodoro", "Progress"]
+    ]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    await update.message.reply_text("Welcome! I am your task management bot.", reply_markup=reply_markup)
 
 async def model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
-    if context.args:
-        model_name = context.args[0].lower()
-        if model_name in ["gpt", "claude", "grok"]:
-            user_data.set_user_model(user_id, model_name)
-            await update.message.reply_text(f"Switched to {model_name.upper()} model.")
-        else:
-            await update.message.reply_text("Invalid model. Use /model [gpt/claude/grok]")
+    current_model = user_data.get_user_model(user_id)
+    # Simple toggle for demonstration
+    new_model = "gpt" if current_model == "claude" else "claude"
+    user_data.set_user_model(user_id, new_model)
+    await update.message.reply_text(f"Switched to {new_model.upper()} model.")
+
+async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    command = update.message.text
+    if command == "Model":
+        await model(update, context)
+    elif command == "Mini App":
+        await miniapp(update, context)
+    elif command == "Voice On":
+        await voice_on(update, context)
+    elif command == "Voice Off":
+        await voice_off(update, context)
+    elif command == "Pomodoro":
+        await pomodoro(update, context)
+    elif command == "Progress":
+        await progress(update, context)
     else:
-        current_model = user_data.get_user_model(user_id)
-        await update.message.reply_text(f"Current model is {current_model.upper()}. Use /model [gpt/claude/grok] to switch.")
+        await handle_message(update, context)
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         user_id = update.message.from_user.id
         text = update.message.text
+
+        if text.startswith('/'):
+            return
 
         model_name = user_data.get_user_model(user_id)
         api_key = {
